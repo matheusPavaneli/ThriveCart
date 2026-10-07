@@ -1,0 +1,30 @@
+{
+    "name": "acme/widget-basket",
+    "description": "Acme Widget Co sales basket",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.4"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Acme\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Acme\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan analyse --no-progress"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

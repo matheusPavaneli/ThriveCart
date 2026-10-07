@@ -1,0 +1,6 @@
+services:
+  php:
+    build: ./api
+    working_dir: /app
+    volumes:
+      - ./api:/app
