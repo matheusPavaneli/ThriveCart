@@ -4,3 +4,28 @@ services:
     working_dir: /app
     volumes:
       - ./api:/app
+    command: sh -c "composer install --no-interaction --no-progress && php -S 0.0.0.0:8000 public/index.php"
+    ports:
+      - "8000:8000"
+
+  web:
+    image: node:24-alpine
+    working_dir: /web
+    volumes:
+      - ./web:/web
+      - web_node_modules:/web/node_modules
+      - pnpm_store:/pnpm-store
+    environment:
+      API_URL: http://php:8000
+      WATCH_POLL: "1"
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      npm_config_store_dir: /pnpm-store
+    command: sh -c "corepack enable && pnpm install --frozen-lockfile && pnpm dev --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+    depends_on:
+      - php
+
+volumes:
+  web_node_modules:
+  pnpm_store:

@@ -4,3 +4,5 @@ dist/
 .env
 .phpunit.cache/
 coverage/
+.workflow/
+.unique/

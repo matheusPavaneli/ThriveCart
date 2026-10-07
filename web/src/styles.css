@@ -1,0 +1,264 @@
+@import 'tailwindcss';
+
+@theme static {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-white: #ffffff;
+  --color-fog: #edeff3;
+  --color-ink: #1b1f2e;
+  --color-slate: #565e73;
+  --color-screen: #151925;
+  --color-phosphor: #f3f5fa;
+  --color-dim: #9aa3b8;
+  --color-red-light: #ff5c6a;
+  --color-red-ink: #b4233a;
+  --color-green-light: #34d399;
+  --color-green-ink: #0b6e4d;
+  --color-blue-light: #6b8cff;
+  --color-blue-ink: #2b4bcb;
+
+  --font-*: initial;
+  --font-sans: 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --text-*: initial;
+  --text-sm: 13px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 25px;
+  --text-2xl: 31px;
+  --text-3xl: 39px;
+  --text-display: 61px;
+
+  --radius-*: initial;
+  --radius-screen: 28px;
+  --radius-window: 20px;
+  --radius-control: 10px;
+  --radius-pill: 999px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-press: 120ms;
+  --duration-ui: 240ms;
+  --duration-light: 600ms;
+}
+
+@layer base {
+  html {
+    background: var(--color-fog);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--color-fog);
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  .on-screen :focus-visible {
+    outline-color: var(--color-phosphor);
+  }
+}
+
+@layer components {
+  .display {
+    font-stretch: 85%;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+
+  .figures {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .screen {
+    background: var(--color-screen);
+    color: var(--color-phosphor);
+    border-radius: var(--radius-screen);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.08),
+      0 30px 60px -20px rgb(27 31 46 / 0.35),
+      0 12px 24px -12px rgb(27 31 46 / 0.25),
+      0 0 90px -30px var(--mix, transparent);
+    transition: box-shadow var(--duration-light) var(--ease-out);
+  }
+
+  .light-field {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: var(--radius-window);
+    background: radial-gradient(120% 90% at 50% 0%, rgb(255 255 255 / 0.05), transparent 60%), color-mix(in oklab, var(--color-screen) 75%, black);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+  }
+
+  .light {
+    position: absolute;
+    width: 90%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--light) 0%, transparent 66%);
+    filter: blur(24px);
+    mix-blend-mode: screen;
+    opacity: var(--intensity);
+    transform: scale(calc(0.7 + var(--intensity) * 0.4));
+    transition:
+      opacity var(--duration-light) var(--ease-out),
+      transform var(--duration-light) var(--ease-out);
+  }
+
+  .light-red {
+    --light: var(--color-red-light);
+    top: -45%;
+    left: -22%;
+  }
+
+  .light-green {
+    --light: var(--color-green-light);
+    top: -45%;
+    right: -22%;
+  }
+
+  .light-blue {
+    --light: var(--color-blue-light);
+    bottom: -70%;
+    left: 5%;
+  }
+
+  .lens {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 32% 28%,
+      color-mix(in oklab, var(--lens-ink) 55%, white) 0%,
+      var(--lens-ink) 52%,
+      color-mix(in oklab, var(--lens-ink) 65%, black) 100%
+    );
+    box-shadow:
+      inset 0 1px 1px rgb(255 255 255 / 0.45),
+      inset 0 -8px 16px rgb(27 31 46 / 0.35);
+    transform: perspective(600px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition: transform var(--duration-ui) var(--ease-out);
+  }
+
+  .lens-glass {
+    position: absolute;
+    inset: 13%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 55%, color-mix(in oklab, var(--lens-ink) 35%, var(--color-screen)), color-mix(in oklab, var(--lens-ink) 15%, var(--color-screen)) 80%);
+    box-shadow:
+      inset 0 2px 6px rgb(0 0 0 / 0.5),
+      0 1px 0 rgb(255 255 255 / 0.25);
+    overflow: hidden;
+  }
+
+  .lens-core {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      color-mix(in oklab, var(--lens-light) 70%, white) 0%,
+      var(--lens-light) 28%,
+      color-mix(in oklab, var(--lens-light) 35%, transparent) 55%,
+      transparent 75%
+    );
+    opacity: var(--glow);
+    transition: opacity var(--duration-light) var(--ease-out);
+    animation: power-on 500ms var(--ease-out) backwards;
+    animation-delay: var(--power-delay, 0ms);
+  }
+
+  .lens-specular {
+    position: absolute;
+    inset: 13%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse 60% 40% at 34% 22%, rgb(255 255 255 / 0.42), transparent 70%);
+    pointer-events: none;
+  }
+
+  .lens-flash {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: lens-flash var(--duration-ui) var(--ease-out);
+  }
+
+  .meter-fill {
+    transform-origin: left center;
+    transform: scaleX(var(--progress));
+    transition: transform var(--duration-light) var(--ease-out), background-color var(--duration-light) var(--ease-out);
+  }
+
+  .button-press {
+    transition:
+      transform var(--duration-press) var(--ease-out),
+      background-color var(--duration-ui) var(--ease-out),
+      opacity var(--duration-ui) var(--ease-out);
+  }
+
+  .button-press:active {
+    transform: scale(0.97);
+  }
+}
+
+@keyframes power-on {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes lens-flash {
+  from {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--lens-light) 75%, transparent);
+  }
+  to {
+    box-shadow: 0 0 0 16px transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lens,
+  .light,
+  .lens-core,
+  .meter-fill,
+  .screen,
+  .button-press {
+    transition: none;
+    animation: none;
+  }
+
+  .lens {
+    transform: none;
+  }
+
+  .light {
+    transform: none;
+  }
+
+  .button-press:active {
+    transform: none;
+  }
+
+  .lens-flash {
+    display: none;
+  }
+}
