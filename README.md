@@ -215,14 +215,3 @@ example baskets from the brief:
 | R01, R01                | $54.37 |
 | R01, G01                | $60.85 |
 | B01, B01, R01, R01, R01 | $98.27 |
-
-## What I would do next
-
-- **Load the catalogue and rules from storage** behind the existing
-  `Catalogue` interface, instead of wiring them in code.
-- **Define how offers combine** once there is more than one: today their
-  discounts add up, with no priority or exclusivity.
-- **Add quantities and removal** to the basket (`add(code, qty)`, `remove`).
-- **Carry a currency on `Money`** if Acme sells outside the US.
-- **Browser tests** (Playwright) for the full flow against the real API; today
-  the UI tests run against responses recorded from it.
