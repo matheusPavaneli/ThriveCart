@@ -7,14 +7,10 @@ namespace Acme\Delivery;
 use Acme\Money;
 use InvalidArgumentException;
 
-/**
- * The lowest tier whose threshold the subtotal is below sets the charge;
- * a subtotal at or above every threshold ships free.
- */
 final readonly class TieredDeliveryCharge implements DeliveryChargeRule
 {
     /** @var list<DeliveryTier> */
-    private array $tiers;
+    public array $tiers;
 
     public function __construct(DeliveryTier ...$tiers)
     {
@@ -40,5 +36,21 @@ final readonly class TieredDeliveryCharge implements DeliveryChargeRule
         }
 
         return Money::zero();
+    }
+
+    public function nextStep(Money $amount): ?DeliveryStep
+    {
+        foreach ($this->tiers as $i => $tier) {
+            if ($amount->isLessThan($tier->below)) {
+                $following = $this->tiers[$i + 1] ?? null;
+
+                return new DeliveryStep(
+                    remaining: $tier->below->subtract($amount),
+                    charge: $following === null ? Money::zero() : $following->charge,
+                );
+            }
+        }
+
+        return null;
     }
 }

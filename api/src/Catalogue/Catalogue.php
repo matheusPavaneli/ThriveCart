@@ -6,6 +6,9 @@ namespace Acme\Catalogue;
 
 interface Catalogue
 {
-    /** @throws UnknownProduct when no product has this code */
+    /** @throws UnknownProduct */
     public function find(string $code): Product;
+
+    /** @return list<Product> */
+    public function all(): array;
 }

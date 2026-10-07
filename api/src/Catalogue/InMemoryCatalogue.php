@@ -27,4 +27,9 @@ final readonly class InMemoryCatalogue implements Catalogue
     {
         return $this->products[$code] ?? throw UnknownProduct::withCode($code);
     }
+
+    public function all(): array
+    {
+        return array_values($this->products);
+    }
 }

@@ -37,6 +37,37 @@ final class TieredDeliveryChargeTest extends TestCase
         self::assertSame($expected, $rule->chargeFor(new Money($subtotal))->cents);
     }
 
+    /** @return iterable<string, array{int, int|null, int|null}> */
+    public static function nextSteps(): iterable
+    {
+        yield 'empty basket' => [0, 5000, 295];
+        yield 'just under $50' => [4999, 1, 295];
+        yield 'exactly $50' => [5000, 4000, 0];
+        yield 'just under $90' => [8999, 1, 0];
+        yield 'exactly $90' => [9000, null, null];
+    }
+
+    #[Test]
+    #[DataProvider('nextSteps')]
+    public function it_says_how_much_more_spend_reaches_the_next_tier(int $amount, ?int $remaining, ?int $charge): void
+    {
+        $rule = new TieredDeliveryCharge(
+            new DeliveryTier(new Money(9000), new Money(295)),
+            new DeliveryTier(new Money(5000), new Money(495)),
+        );
+
+        $step = $rule->nextStep(new Money($amount));
+
+        self::assertSame($remaining, $step?->remaining->cents);
+        self::assertSame($charge, $step?->charge->cents);
+    }
+
+    #[Test]
+    public function with_no_tiers_there_is_no_next_step(): void
+    {
+        self::assertNull(new TieredDeliveryCharge()->nextStep(new Money(0)));
+    }
+
     #[Test]
     public function tiers_given_out_of_order_behave_the_same(): void
     {

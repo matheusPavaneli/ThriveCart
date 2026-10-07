@@ -24,6 +24,16 @@ final class InMemoryCatalogueTest extends TestCase
     }
 
     #[Test]
+    public function it_lists_every_product_in_the_order_given(): void
+    {
+        $red = new Product('R01', 'Red Widget', new Money(3295));
+        $green = new Product('G01', 'Green Widget', new Money(2495));
+        $blue = new Product('B01', 'Blue Widget', new Money(795));
+
+        self::assertSame([$red, $green, $blue], new InMemoryCatalogue($red, $green, $blue)->all());
+    }
+
+    #[Test]
     public function an_unknown_code_is_rejected(): void
     {
         $catalogue = new InMemoryCatalogue(new Product('R01', 'Red Widget', new Money(3295)));
