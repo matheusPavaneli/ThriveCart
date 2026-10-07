@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Acme\AcmeWidgetCo;
+use Acme\Catalogue\UnknownProduct;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+$codes = array_slice($argv, 1);
+$basket = AcmeWidgetCo::basket();
+
+try {
+    foreach ($codes as $code) {
+        $basket->add($code);
+    }
+} catch (UnknownProduct $e) {
+    fwrite(STDERR, $e->getMessage() . PHP_EOL);
+    exit(1);
+}
+
+$quote = $basket->quote();
+printf(
+    "Items:    %s\nSubtotal: %s\nDiscount: -%s\nDelivery: %s\nTotal:    %s\n",
+    $codes === [] ? '(none)' : implode(', ', $codes),
+    $quote->subtotal->format(),
+    $quote->discount->format(),
+    $quote->delivery->format(),
+    $quote->total->format(),
+);
