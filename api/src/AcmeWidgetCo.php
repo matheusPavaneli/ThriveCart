@@ -12,6 +12,7 @@ use Acme\Http\HttpApi;
 use Acme\Offer\BuyOneGetSecondHalfPrice;
 use Acme\Offer\Offer;
 
+/** The only place that knows Acme's prices, delivery tiers and offers. */
 final class AcmeWidgetCo
 {
     public static function basket(): Basket

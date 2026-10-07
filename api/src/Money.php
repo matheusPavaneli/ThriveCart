@@ -35,6 +35,7 @@ final readonly class Money
         return new self($this->cents * $factor);
     }
 
+    /** Rounds down to the cent, which is what makes R01, R01 total $54.37. */
     public function halved(): self
     {
         return new self(intdiv($this->cents, 2));

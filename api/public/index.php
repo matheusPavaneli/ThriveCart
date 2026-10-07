@@ -13,6 +13,7 @@ $method = is_string($_SERVER['REQUEST_METHOD'] ?? null) ? $_SERVER['REQUEST_METH
 $uri = is_string($_SERVER['REQUEST_URI'] ?? null) ? $_SERVER['REQUEST_URI'] : '/';
 $path = parse_url($uri, PHP_URL_PATH);
 
+// One byte past the cap detects an oversized body without buffering all of it.
 $body = file_get_contents('php://input', length: MAX_BODY_BYTES + 1);
 
 $response = match (true) {

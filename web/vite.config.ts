@@ -9,6 +9,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     proxy: { '/api': apiUrl },
+    // File events do not cross Docker bind mounts on Windows/WSL, so compose turns polling on.
     watch: process.env['WATCH_POLL'] === '1' ? { usePolling: true, interval: 300 } : {},
   },
   test: {

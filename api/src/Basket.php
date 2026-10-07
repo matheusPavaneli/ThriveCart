@@ -37,6 +37,10 @@ final class Basket
         return $this->quote()->total;
     }
 
+    /**
+     * Offers come off first and delivery is charged on what is left, so a
+     * discount can move a basket into a dearer delivery tier.
+     */
     public function quote(): Quote
     {
         $subtotal = Money::zero();

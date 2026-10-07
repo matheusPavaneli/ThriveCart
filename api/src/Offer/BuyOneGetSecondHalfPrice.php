@@ -7,6 +7,7 @@ namespace Acme\Offer;
 use Acme\Catalogue\Product;
 use Acme\Money;
 
+/** Every second matching item is half price: two pay for one and a half, four for three. */
 final readonly class BuyOneGetSecondHalfPrice implements Offer
 {
     public function __construct(public string $productCode)
