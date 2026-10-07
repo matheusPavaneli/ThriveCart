@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 final class AcmeWidgetCoTest extends TestCase
 {
-    /** @return iterable<string, array{list<string>, string}> The example baskets from the brief. */
+    /** @return iterable<string, array{list<string>, string}> */
     public static function exampleBaskets(): iterable
     {
         yield 'B01, G01' => [['B01', 'G01'], '$37.85'];

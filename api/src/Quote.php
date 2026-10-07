@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Acme;
 
-/** The priced breakdown of a basket: what was bought, what came off, what delivery adds. */
 final readonly class Quote
 {
     public Money $total;

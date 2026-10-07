@@ -107,7 +107,6 @@ final class BasketTest extends TestCase
     }
 }
 
-/** A delivery rule that charges a flat amount and remembers every subtotal it was asked about. */
 final class RecordingFlatDelivery implements DeliveryChargeRule
 {
     /** @var list<int> */

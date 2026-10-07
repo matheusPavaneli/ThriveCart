@@ -9,6 +9,6 @@ use Acme\Money;
 
 interface Offer
 {
-    /** @param list<Product> $items every item in the basket, in the order added */
+    /** @param list<Product> $items */
     public function discountFor(array $items): Money;
 }

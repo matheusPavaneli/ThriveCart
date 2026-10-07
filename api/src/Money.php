@@ -6,10 +6,6 @@ namespace Acme;
 
 use InvalidArgumentException;
 
-/**
- * A non-negative amount of dollars held in integer cents, so no float ever
- * touches a price.
- */
 final readonly class Money
 {
     public function __construct(public int $cents)
@@ -39,7 +35,6 @@ final readonly class Money
         return new self($this->cents * $factor);
     }
 
-    /** Half of this amount, rounded down to the cent. */
     public function halved(): self
     {
         return new self(intdiv($this->cents, 2));

@@ -26,7 +26,7 @@ final class Basket
         $this->offers = array_values($offers);
     }
 
-    /** @throws UnknownProduct when the code is not in the catalogue; the basket is left as it was */
+    /** @throws UnknownProduct */
     public function add(string $code): void
     {
         $this->items[] = $this->catalogue->find($code);
@@ -37,10 +37,6 @@ final class Basket
         return $this->quote()->total;
     }
 
-    /**
-     * Offers come off first and delivery is charged on what is left, so a
-     * discount can move a basket into a dearer delivery tier.
-     */
     public function quote(): Quote
     {
         $subtotal = Money::zero();
